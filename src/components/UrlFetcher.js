@@ -39,6 +39,11 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
   }, [groups, onContentLoaded]);
 
   const handleFetch = async () => {
+    if (!urls.trim()) {
+      setError('Please enter at least one URL.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setGroups([]);
@@ -132,12 +137,18 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
         <label htmlFor="url-input">Enter URLs (one per line)</label>
         <textarea
           id="url-input"
-          className="form-control"
+          className={`form-control ${error ? 'is-invalid' : ''}`}
           rows="3"
           value={urls}
-          onChange={(e) => setUrls(e.target.value)}
+          onChange={(e) => {
+            setUrls(e.target.value);
+            if (error) {
+              setError(null);
+            }
+          }}
           placeholder="https://example.com/image1.jpg\nhttps://example.com/image2.jpg"
         />
+        {error && <div className="invalid-feedback">{error}</div>}
         <button className="btn btn-primary mt-2" onClick={handleFetch} disabled={loading}>
           {loading ? (
             <>
@@ -158,7 +169,7 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
         </div>
       )}
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      
 
       {!loading && !error && groups.length === 0 && (
         <div className="card mt-3">
