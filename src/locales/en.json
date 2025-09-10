@@ -1,0 +1,21 @@
+{
+  "home": "Home",
+  "posts": "Posts",
+  "price": "Price",
+  "signup": "Sign Up",
+  "our_pricing_plans": "Our Pricing Plans",
+  "per_month": "/ mo",
+  "sign_up_for": "Sign up for",
+  "sign_up_title": "Sign Up",
+  "email_address": "Email address",
+  "enter_email": "Enter email",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "passwords_do_not_match": "Passwords do not match!",
+  "my_account": "My Account",
+  "settings": "Settings",
+  "settings_title": "Settings",
+  "login_option": "Login",
+  "add_facebook_account": "Add Facebook Account",
+  "facebook_account": "Facebook Account"
+}
