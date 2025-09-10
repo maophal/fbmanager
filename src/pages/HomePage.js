@@ -14,6 +14,11 @@ function HomePage({ users, selectedUser, selectedPage, dispatch }) {
   const [step, setStep] = useState('select_type'); // select_type, select_user, select_page, create_post
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
+  const handleTabSelect = (tab) => {
+    setSelectedTab(tab);
+    setStep('select_type');
+  };
+
   const handlePostTypeSelect = (type) => {
     setPostType(type);
     setStep('select_user');
@@ -47,7 +52,7 @@ function HomePage({ users, selectedUser, selectedPage, dispatch }) {
     <div className="container mt-3">
       {isAuthenticated ? (
         <>
-          <TabBar onSelect={setSelectedTab} />
+          <TabBar onSelect={handleTabSelect} />
           {selectedTab === 'post' && (
             <div className="mt-3">
               {step !== 'select_type' && (
