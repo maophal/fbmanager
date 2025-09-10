@@ -1,24 +1,31 @@
-import { FETCH_ACCOUNTS, SELECT_ACCOUNT, SET_FACEBOOK_ACCOUNTS } from './types';
+import { FETCH_ACCOUNTS, SELECT_USER, SELECT_PAGE, SET_FACEBOOK_USER_AND_PAGES } from './types';
 import FacebookService from '../../services/FacebookService';
 
-export const fetchAccounts = () => dispatch => {
-  const accounts = FacebookService.getAccounts();
+export const fetchFacebookData = () => dispatch => {
+  const facebookData = FacebookService.getFacebookData();
   dispatch({
-    type: FETCH_ACCOUNTS,
-    payload: accounts
+    type: FETCH_ACCOUNTS, // I will reuse FETCH_ACCOUNTS for now
+    payload: facebookData
   });
 };
 
-export const selectAccount = (accountId) => dispatch => {
+export const selectUser = (userId) => dispatch => {
   dispatch({
-    type: SELECT_ACCOUNT,
-    payload: accountId
+    type: SELECT_USER,
+    payload: userId
   });
 };
 
-export const setFacebookAccounts = (accounts) => dispatch => {
+export const selectPage = (pageId) => dispatch => {
   dispatch({
-    type: SET_FACEBOOK_ACCOUNTS,
-    payload: accounts
+    type: SELECT_PAGE,
+    payload: pageId
+  });
+};
+
+export const setFacebookUserAndPages = (facebookData) => dispatch => {
+  dispatch({
+    type: SET_FACEBOOK_USER_AND_PAGES,
+    payload: facebookData
   });
 };

@@ -16,6 +16,7 @@
   "settings": "Settings",
   "settings_title": "Settings",
   "login_option": "Login",
+  "logout_option": "Logout",
   "add_facebook_account": "Add Facebook Account",
   "facebook_account": "Facebook Account"
 }

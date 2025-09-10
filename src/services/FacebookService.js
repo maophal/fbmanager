@@ -1,4 +1,4 @@
-import { setFacebookAccounts } from '../redux/actions/accountActions';
+import { setFacebookUserAndPages } from '../redux/actions/accountActions';
 
 const FacebookService = {
   handleLoginSuccess: (response) => {
@@ -18,27 +18,35 @@ const FacebookService = {
     if (response.authResponse && response.authResponse.accessToken) {
       const accessToken = response.authResponse.accessToken;
       try {
-        // Get user's pages
-        const accountsResponse = await fetch(`https://graph.facebook.com/me/accounts?access_token=${accessToken}&fields=name,access_token`);
-        const accountsData = await accountsResponse.json();
-        
-        const accounts = accountsData.data.map(account => ({
-          id: account.id,
-          name: account.name,
-          accessToken: account.access_token,
-        }));
+        // Get user's profile
+        const userResponse = await fetch(`https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name`);
+        const userData = await userResponse.json();
 
-        dispatch(setFacebookAccounts(accounts));
-        localStorage.setItem('facebookAccounts', JSON.stringify(accounts));
+        // Get user's pages
+        const pagesResponse = await fetch(`https://graph.facebook.com/me/accounts?access_token=${accessToken}&fields=name,access_token`);
+        const pagesData = await pagesResponse.json();
+
+        const facebookData = {
+          id: userData.id,
+          name: userData.name,
+          pages: pagesData.data.map(page => ({
+            id: page.id,
+            name: page.name,
+            accessToken: page.access_token,
+          })),
+        };
+
+        dispatch(setFacebookUserAndPages(facebookData));
+        localStorage.setItem('facebookData', JSON.stringify([facebookData])); // Store as an array
       } catch (error) {
-        console.error('Error fetching Facebook accounts:', error);
+        console.error('Error fetching Facebook data:', error);
       }
     }
   },
 
-  getAccounts: () => {
-    const accounts = localStorage.getItem('facebookAccounts');
-    return accounts ? JSON.parse(accounts) : [];
+  getFacebookData: () => {
+    const facebookData = localStorage.getItem('facebookData');
+    return facebookData ? JSON.parse(facebookData) : []; // Return an empty array if null
   },
 };
 

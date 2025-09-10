@@ -9,6 +9,7 @@ const PostCreator = ({ postType, selectedAccount, createPost }) => {
   const [videoUrl, setVideoUrl] = useState('');
 
   const handlePost = () => {
+     console.log('Selected Account in HomePage:', selectedAccount);
     if (!selectedAccount) {
       alert('Please select an account first.');
       return;
