@@ -35,6 +35,7 @@ const PostCreator = ({ postType, selectedAccount, createPost }) => {
     <div className="mt-3">
       {(postType === 'image' || postType === 'video') && (
         <UrlFetcher
+          postType={postType}
           onSelectionChange={setSelectedGroups}
           onContentLoaded={setHasContent}
         />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
-const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
+const UrlFetcher = ({ postType, onSelectionChange, onContentLoaded }) => {
   const [urls, setUrls] = useState('');
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
@@ -52,24 +52,37 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
     const urlList = urls.split('\n').filter(url => url.trim() !== '');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const sampleData = urlList.map((url, urlIndex) => ({
-        id: `group-${urlIndex}`,
-        url: url.trim(),
-        caption: '',
-        isScheduled: false,
-        scheduledDateTime: '',
-        items: Array.from({ length: 5 }, (_, i) => ({
-          id: `item-${urlIndex}-${i}`,
-          type: 'image',
-          url: `${url.trim()}/${i + 1}`, // Just an example
-          thumbnail: `https://picsum.photos/seed/${urlIndex}-${i}/100/100`,
-        })),
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      const sampleData = await Promise.all(urlList.map(async (url, urlIndex) => {
+        let itemData = {
+          id: `item-${urlIndex}-0`,
+          type: postType,
+          url: url.trim(),
+          thumbnail: postType === 'video' ? '' : `https://picsum.photos/seed/${urlIndex}-0/100/100`,
+        };
+
+        if (postType === 'video') {
+          // Simulate video upload and get a video ID
+          // In a real application, you would upload the video file here
+          // and get a video ID from the Facebook API.
+          await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate upload time
+          itemData.videoId = `simulated_video_id_${Date.now()}_${urlIndex}`;
+          // itemData.url = `https://www.w3schools.com/html/mov_bbb.mp4`; // Placeholder for video player
+        }
+
+        return {
+          id: `group-${urlIndex}`,
+          url: url.trim(), // Original URL for reference
+          caption: '',
+          isScheduled: false,
+          scheduledDateTime: '',
+          items: [itemData],
+        };
       }));
       setGroups(sampleData);
 
     } catch (err) {
-      setError('Failed to fetch content from the URLs. This might be due to CORS restrictions.');
+      setError('Failed to fetch content from the URLs. This might be due to CORS restrictions or invalid URLs.');
     } finally {
       setLoading(false);
     }
@@ -235,7 +248,11 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
             <div className="row">
               {group.items.map(item => (
                 <div className="col" key={item.id}>
-                  <img src={item.thumbnail} className="img-fluid" alt="Fetched content" />
+                  {item.type === 'image' ? (
+                    <img src={item.thumbnail} className="img-fluid" alt="Fetched content" />
+                  ) : (
+                    <video src={item.url} className="img-fluid" controls />
+                  )}
                 </div>
               ))}
             </div>

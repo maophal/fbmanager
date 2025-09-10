@@ -48,6 +48,28 @@ const FacebookService = {
     const facebookData = localStorage.getItem('facebookData');
     return facebookData ? JSON.parse(facebookData) : []; // Return an empty array if null
   },
+
+  postVideoReel: async (accountId, postData) => {
+    console.log('Posting video reel to account:', accountId);
+    console.log('Post data:', postData);
+    console.log('Simulated Video ID:', postData.videoId);
+
+    // This is a placeholder for the actual Facebook API call.
+    // You would typically use the Facebook Graph API to upload the video and create a reel.
+    // This would involve multiple steps:
+    // 1. Initialize the video upload.
+    // 2. Upload the video file in chunks.
+    // 3. Finish the upload and get a video ID.
+    // 4. Create the reel with the video ID.
+
+    // For now, we will just simulate a successful post.
+    return new Promise(resolve => {
+      setTimeout(() => {
+        console.log('Video reel posted successfully (simulated).');
+        resolve({ success: true });
+      }, 2000);
+    });
+  },
 };
 
 export default FacebookService;
