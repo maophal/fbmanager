@@ -139,13 +139,42 @@ const UrlFetcher = ({ onSelectionChange, onContentLoaded }) => {
           placeholder="https://example.com/image1.jpg\nhttps://example.com/image2.jpg"
         />
         <button className="btn btn-primary mt-2" onClick={handleFetch} disabled={loading}>
-          {loading ? 'Fetching...' : 'Fetch'}
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span className="sr-only">Loading...</span>
+            </>
+          ) : (
+            'Fetch'
+          )}
         </button>
       </div>
 
+      {loading && (
+        <div className="d-flex justify-content-center mt-3">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
+
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {groups.length > 0 && (
+      {!loading && !error && groups.length === 0 && (
+        <div className="card mt-3">
+          <div className="card-body text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-images mb-3" viewBox="0 0 16 16">
+              <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+              <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2zM1 5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1z"/>
+              <path d="M10.648 8.447a.5.5 0 0 1 .577-.093l2.71 2.168a.5.5 0 0 1-.758.64l-2.43-1.944a.5.5 0 0 1 .093-.577zM4.28 11.282a.5.5 0 0 1 .64.758l-2.168 2.71a.5.5 0 0 1-.64-.758l2.168-2.71z"/>
+            </svg>
+            <h5 className="card-title">No Content</h5>
+            <p className="card-text">Enter some URLs in the box above and click "Fetch" to see the content here.</p>
+          </div>
+        </div>
+      )}
+
+      {!loading && groups.length > 0 && (
         <div className="d-flex justify-content-end mb-3">
           <button className="btn btn-secondary mr-2" onClick={handleSelectAll}>Select All</button>
           <button className="btn btn-secondary mr-2" onClick={handleUnselectAll}>Unselect All</button>
